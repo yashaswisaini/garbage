@@ -1,0 +1,46 @@
+To test the JsonConverter code and handle the exceptions thrown by the toJson and fromJson methods, you can follow these steps:
+
+Create a Java class that represents the object you want to convert to JSON. For example, let's create a class called Person with two fields: name and age.
+java
+Copy code
+public class Person {
+    private String name;
+    private int age;
+
+    public Person(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+}
+Create an instance of the Person class and pass it to the toJson method to convert it to a JSON string. Use try-catch blocks to handle any exceptions that might be thrown.
+java
+Copy code
+Person person = new Person("John", 30);
+String json;
+try {
+    json = JsonConverter.toJson(person);
+    System.out.println(json);
+} catch (Exception e) {
+    e.printStackTrace();
+}
+Pass the JSON string to the fromJson method along with the class type you want to deserialize it to. In this case, we want to deserialize it to a Person object. Again, use try-catch blocks to handle any exceptions that might be thrown.
+java
+Copy code
+try {
+    Person personFromJson = JsonConverter.fromJson(json, Person.class);
+    System.out.println(personFromJson.getName());
+    System.out.println(personFromJson.getAge());
+} catch (Exception e) {
+    e.printStackTrace();
+}
+If an exception is thrown in either the toJson or fromJson method, the corresponding catch block will handle it and print the stack trace. If there are no exceptions, the code will output the JSON string and the values of the Person object to the console.
+
+
