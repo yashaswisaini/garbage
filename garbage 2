@@ -1,0 +1,46 @@
+ here's an example of a utility class that can convert Java objects to JSON and vice versa using the Jackson library:
+
+java
+Copy code
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+public class JsonConverter {
+
+    private static ObjectMapper objectMapper = new ObjectMapper();
+
+    /**
+     * Converts a Java object to JSON format
+     *
+     * @param obj the Java object to convert
+     * @return a JSON string representing the object
+     * @throws Exception if there is an error during conversion
+     */
+    public static String toJson(Object obj) throws Exception {
+        return objectMapper.writeValueAsString(obj);
+    }
+
+    /**
+     * Converts a JSON string to a Java object of the specified type
+     *
+     * @param json the JSON string to convert
+     * @param clazz the class of the Java object to convert to
+     * @return a Java object representing the JSON data
+     * @throws Exception if there is an error during conversion
+     */
+    public static <T> T fromJson(String json, Class<T> clazz) throws Exception {
+        return objectMapper.readValue(json, clazz);
+    }
+}
+Here's an example of how to use this utility class to convert a Java object to JSON:
+
+java
+Copy code
+Person person = new Person("John", 30, "123 Main St");
+String json = JsonConverter.toJson(person);
+And here's an example of how to use it to convert a JSON string back to a Java object:
+
+java
+Copy code
+String json = "{\"name\":\"John\",\"age\":30,\"address\":\"123 Main St\"}";
+Person person = JsonConverter.fromJson(json, Person.class);
+Note that in order to use this utility class, you'll need to have the Jackson library on your classpath. You can add it to your project as a dependency using a build tool like Maven or Gradle.
