@@ -1,0 +1,94 @@
+First, let's create the Entity class:
+
+@Entity
+@Table(name = "my_table")
+public class MyEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String name;
+
+    // getters and setters
+}
+
+
+
+Next, let's create the DTO class:
+
+public class MyDto {
+    private Long id;
+
+    private String name;
+
+    // getters and setters
+}
+
+
+Then, let's create the VO class:
+
+public class MyVo {
+    private Long id;
+
+    private String name;
+
+    // getters and setters
+}
+
+
+
+After that, let's create the Repository interface:
+@Repository
+public interface MyRepository extends JpaRepository<MyEntity, Long> {
+}
+
+
+
+Next, let's create the Service class:
+@Service
+public class MyService {
+    private final MyRepository myRepository;
+
+    public MyService(MyRepository myRepository) {
+        this.myRepository = myRepository;
+    }
+
+    public MyVo findById(Long id) {
+        Optional<MyEntity> optionalMyEntity = myRepository.findById(id);
+        if (optionalMyEntity.isPresent()) {
+            MyEntity myEntity = optionalMyEntity.get();
+            MyDto myDto = new MyDto();
+            myDto.setId(myEntity.getId());
+            myDto.setName(myEntity.getName());
+            MyVo myVo = new MyVo();
+            myVo.setId(myDto.getId());
+            myVo.setName(myDto.getName());
+            return myVo;
+        }
+        return null;
+    }
+}
+
+
+
+Finally, let's create the Controller class:
+
+@RestController
+@RequestMapping("/my-entity")
+public class MyController {
+    private final MyService myService;
+
+    public MyController(MyService myService) {
+        this.myService = myService;
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<MyVo> findById(@PathVariable("id") Long id) {
+        MyVo myVo = myService.findById(id);
+        if (myVo != null) {
+            return ResponseEntity.ok(myVo);
+        }
+        return ResponseEntity.notFound().build();
+    }
+}
+And that's it! This service retrieves data from a database using an ID in Spring Boot. Note that this is just a sample implementation, and you may need to modify it to fit your specific requirements.
